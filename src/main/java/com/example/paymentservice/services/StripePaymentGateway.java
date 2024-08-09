@@ -47,11 +47,21 @@ public class StripePaymentGateway implements PaymentService {
                                         .setQuantity(1L)
                                         .build()
                         )
+                        .setAfterCompletion(
+                                PaymentLinkCreateParams.AfterCompletion.builder()
+                                        .setType(PaymentLinkCreateParams.AfterCompletion.Type.REDIRECT) // Callback
+                                        .setRedirect(PaymentLinkCreateParams.AfterCompletion.Redirect.builder()
+                                                .setUrl("https://www.google.com")
+                                                .build()
+                                        )
+                                        .build()
+
+                        )
                         .build();
 
         PaymentLink paymentLink = PaymentLink.create(paymentLinkCreateParams);
 
 
-        return paymentLink.toString();
+        return paymentLink.getUrl();
     }
 }
